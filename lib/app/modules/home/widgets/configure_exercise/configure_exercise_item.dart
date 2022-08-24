@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meu_hiit/app/modules/helpers/color_helper.dart';
 
 import '../../../helpers/screen_helper.dart';
 import '../../../helpers/text_style_helper.dart';

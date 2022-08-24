@@ -14,7 +14,7 @@ abstract class HomePageViewModel extends State<HomePage> {
     if (homeStore.exerciseStarted || homeStore.exercisePaused) {
       return Container();
     }
-    return const ConfigureExercise();
+    return ConfigureExercise();
   }
 
   Widget getExerciseButton() {

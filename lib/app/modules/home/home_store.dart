@@ -25,6 +25,16 @@ abstract class HomeStoreBase with Store {
   int restTimer = 30;
 
   @action
+  void increaseExerciseTimer() {
+    exerciseTimer++;
+  }
+
+  @action
+  void decreaseExerciseTimer() {
+    exerciseTimer--;
+  }
+
+  @action
   void startTimer() {
     exerciseStarted = true;
     const oneSec = Duration(seconds: 1);

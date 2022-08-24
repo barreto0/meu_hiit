@@ -3,7 +3,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:meu_hiit/app/modules/helpers/text_style_helper.dart';
 import 'package:meu_hiit/app/modules/home/home_store.dart';
-import 'package:mobx/mobx.dart';
 
 class ExerciseClock extends StatefulWidget {
   const ExerciseClock({Key? key}) : super(key: key);
