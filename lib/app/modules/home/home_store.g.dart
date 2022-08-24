@@ -179,6 +179,28 @@ mixin _$HomeStore on HomeStoreBase, Store {
   }
 
   @override
+  void increaseRestTimer() {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.increaseRestTimer');
+    try {
+      return super.increaseRestTimer();
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void decreaseRestTimer() {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.decreaseRestTimer');
+    try {
+      return super.decreaseRestTimer();
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void increaseTotalRounds() {
     final _$actionInfo = _$HomeStoreBaseActionController.startAction(
         name: 'HomeStoreBase.increaseTotalRounds');
