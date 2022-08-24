@@ -39,9 +39,11 @@ class ConfigureExercise extends StatelessWidget {
                   height: ScreenHelper.screenHeightPercentage(context, 2),
                 ),
                 MeuHiitButton(
-                    width: ScreenHelper.screenWidth(context),
-                    onPressed: () {},
-                    label: 'Salvar')
+                  width: ScreenHelper.screenWidth(context),
+                  onPressed: () {},
+                  label: 'Salvar',
+                  color: '#79FF6D',
+                )
               ],
             ),
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:meu_hiit/app/modules/commom_widgets/meu_hiit_appbar.dart';
 import 'package:meu_hiit/app/modules/helpers/color_helper.dart';
 import 'package:meu_hiit/app/modules/helpers/screen_helper.dart';
@@ -15,39 +16,37 @@ class HomePageView extends HomePageViewModel {
       backgroundColor: ColorHelper.lightGray(),
       appBar: MeuHiitAppbar(title: 'Exercício', hasGoBack: false),
       body: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: ScreenHelper.screenWidthPercentage(context, 3),
-            vertical: ScreenHelper.screenHeightPercentage(context, 5)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
-                RoundCycleCounter(
-                  title: 'Rounds',
-                ),
-                RoundCycleCounter(
-                  title: 'Ciclos',
-                ),
-              ],
-            ),
-            const ExerciseClock(),
-            Column(
+          padding: EdgeInsets.symmetric(
+              horizontal: ScreenHelper.screenWidthPercentage(context, 3),
+              vertical: ScreenHelper.screenHeightPercentage(context, 5)),
+          child: Observer(builder: (builder) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                MeuHiitButton(
-                    width: ScreenHelper.screenWidth(context),
-                    onPressed: () {},
-                    label: 'Começar!'),
-                SizedBox(
-                  height: ScreenHelper.screenHeightPercentage(context, 4),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    RoundCycleCounter(
+                      title: 'Rounds',
+                    ),
+                    RoundCycleCounter(
+                      title: 'Ciclos',
+                    ),
+                  ],
                 ),
-                const ConfigureExercise()
+                const ExerciseClock(),
+                Column(
+                  children: [
+                    getExerciseButton(),
+                    SizedBox(
+                      height: ScreenHelper.screenHeightPercentage(context, 4),
+                    ),
+                    showConfigureExercise()
+                  ],
+                )
               ],
-            )
-          ],
-        ),
-      ),
+            );
+          })),
     );
   }
 }

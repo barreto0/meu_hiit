@@ -6,11 +6,13 @@ class MeuHiitButton extends StatefulWidget {
   final double width;
   final Function() onPressed;
   final String label;
+  final String color;
   const MeuHiitButton({
     Key? key,
     required this.width,
     required this.onPressed,
     required this.label,
+    required this.color,
   }) : super(key: key);
 
   @override
@@ -25,7 +27,7 @@ class _MeuHiitButtonState extends State<MeuHiitButton> {
       child: TextButton(
         onPressed: widget.onPressed,
         style: TextButton.styleFrom(
-            backgroundColor: HexColor.fromHex('#79FF6D'),
+            backgroundColor: HexColor.fromHex(widget.color),
             elevation: 0,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
