@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:meu_hiit/app/modules/extensions/hex_color.dart';
-import '../../helpers/text_style_helper.dart';
+import '../helpers/text_style_helper.dart';
 
-class StartButton extends StatefulWidget {
+class MeuHiitButton extends StatefulWidget {
   final double width;
   final Function() onPressed;
   final String label;
-  const StartButton({
+  const MeuHiitButton({
     Key? key,
     required this.width,
     required this.onPressed,
@@ -14,10 +14,10 @@ class StartButton extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<StartButton> createState() => _StartButtonState();
+  State<MeuHiitButton> createState() => _MeuHiitButtonState();
 }
 
-class _StartButtonState extends State<StartButton> {
+class _MeuHiitButtonState extends State<MeuHiitButton> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(

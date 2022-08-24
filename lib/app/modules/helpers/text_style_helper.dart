@@ -21,6 +21,14 @@ class TextStyleHelper {
     );
   }
 
+  static TextStyle configureExerciseItemText(BuildContext context) {
+    return GoogleFonts.inter(
+      color: ColorHelper.lightGray(),
+      fontWeight: FontWeight.w700,
+      fontSize: ScreenHelper.screenHeightPercentage(context, 3),
+    );
+  }
+
   static TextStyle roundAndCycleText(BuildContext context) {
     return GoogleFonts.inter(
       color: Colors.white,
