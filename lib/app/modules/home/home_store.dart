@@ -47,6 +47,16 @@ abstract class HomeStoreBase with Store {
   }
 
   @action
+  void increaseRestTimer() {
+    if (restTimer < 3600) restTimer++;
+  }
+
+  @action
+  void decreaseRestTimer() {
+    if (restTimer > 10) restTimer--;
+  }
+
+  @action
   void increaseTotalRounds() {
     if (totalRounds < 100) totalRounds++;
   }

@@ -40,8 +40,12 @@ class ConfigureExercise extends StatelessWidget {
                     ConfigureExerciseItem(
                         label: 'Descanso',
                         count: homeStore.formatTimer('rest'),
-                        add: () {},
-                        subtract: () {}),
+                        add: () {
+                          homeStore.increaseRestTimer();
+                        },
+                        subtract: () {
+                          homeStore.decreaseRestTimer();
+                        }),
                     ConfigureExerciseItem(
                         label: 'Rounds',
                         count: homeStore.totalRounds.toString(),
