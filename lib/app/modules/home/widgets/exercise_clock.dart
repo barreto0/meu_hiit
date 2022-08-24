@@ -20,12 +20,15 @@ class _ExerciseClockState extends State<ExerciseClock> {
       return Column(
         children: [
           Text(
-            'Pronto?',
-            style: TextStyleHelper.exercisePhraseIDLE(context),
+            homeStore.getEffectPhrase()['label'],
+            textAlign: TextAlign.center,
+            style: TextStyleHelper.exercisePhraseIDLE(
+                context: context, color: homeStore.getEffectPhrase()['color']),
           ),
           Text(
-            homeStore.formatExerciseTimer(),
-            style: TextStyleHelper.exerciseClockTextIDLE(context),
+            homeStore.formatTimer('exercise'),
+            style: TextStyleHelper.exerciseClockTextIDLE(
+                context: context, color: homeStore.getEffectPhrase()['color']),
           )
         ],
       );

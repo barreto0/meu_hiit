@@ -20,16 +20,17 @@ class ConfigureExercise extends StatelessWidget {
         MeuHiitBottomSheet().getBottomSheet(
           context: context,
           content: Padding(
-              padding: EdgeInsets.all(
-                ScreenHelper.screenHeightPercentage(context, 2.5),
-              ),
-              child: Observer(builder: (builder) {
+            padding: EdgeInsets.all(
+              ScreenHelper.screenHeightPercentage(context, 2.5),
+            ),
+            child: Observer(
+              builder: (builder) {
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     ConfigureExerciseItem(
                         label: 'Exercício',
-                        count: homeStore.formatExerciseTimer(),
+                        count: homeStore.formatTimer('exercise'),
                         add: () {
                           homeStore.increaseExerciseTimer();
                         },
@@ -38,19 +39,27 @@ class ConfigureExercise extends StatelessWidget {
                         }),
                     ConfigureExerciseItem(
                         label: 'Descanso',
-                        count: '00:30',
+                        count: homeStore.formatTimer('rest'),
                         add: () {},
                         subtract: () {}),
                     ConfigureExerciseItem(
                         label: 'Rounds',
-                        count: '6',
-                        add: () {},
-                        subtract: () {}),
+                        count: homeStore.totalRounds.toString(),
+                        add: () {
+                          homeStore.increaseTotalRounds();
+                        },
+                        subtract: () {
+                          homeStore.decreaseTotalRounds();
+                        }),
                     ConfigureExerciseItem(
                         label: 'Ciclos',
-                        count: '6',
-                        add: () {},
-                        subtract: () {}),
+                        count: homeStore.totalCycles.toString(),
+                        add: () {
+                          homeStore.increaseTotalCycles();
+                        },
+                        subtract: () {
+                          homeStore.decreaseTotalCycles();
+                        }),
                     SizedBox(
                       height: ScreenHelper.screenHeightPercentage(context, 2),
                     ),
@@ -62,7 +71,9 @@ class ConfigureExercise extends StatelessWidget {
                     )
                   ],
                 );
-              })),
+              },
+            ),
+          ),
         );
       },
       child: Text(

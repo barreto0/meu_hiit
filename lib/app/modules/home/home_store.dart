@@ -24,14 +24,46 @@ abstract class HomeStoreBase with Store {
   @observable
   int restTimer = 30;
 
+  @observable
+  int totalRounds = 6;
+
+  @observable
+  int totalCycles = 6;
+
+  @observable
+  int currentRound = 1;
+
+  @observable
+  int currentCycle = 1;
+
   @action
   void increaseExerciseTimer() {
-    exerciseTimer++;
+    if (exerciseTimer < 3600) exerciseTimer++;
   }
 
   @action
   void decreaseExerciseTimer() {
-    exerciseTimer--;
+    if (exerciseTimer > 10) exerciseTimer--;
+  }
+
+  @action
+  void increaseTotalRounds() {
+    if (totalRounds < 100) totalRounds++;
+  }
+
+  @action
+  void decreaseTotalRounds() {
+    if (totalRounds > 1) totalRounds--;
+  }
+
+  @action
+  void increaseTotalCycles() {
+    if (totalCycles < 100) totalCycles++;
+  }
+
+  @action
+  void decreaseTotalCycles() {
+    if (totalCycles > 1) totalCycles--;
   }
 
   @action
@@ -73,42 +105,84 @@ abstract class HomeStoreBase with Store {
     exerciseTimer = 60;
   }
 
-  Map getExerciseButtonConfig() {
-    Map buttonConfig = {'label': 'Começar!', 'color': '#79FF6D', 'state': 0};
+  int getTimerState() {
     if (exerciseStarted && !exerciseEnded && !exercisePaused) {
       //exercicio rolando
-      return buttonConfig = {'label': 'Pausar', 'color': '#FFF06D', 'state': 1};
+      return 1;
     }
     if (exerciseStarted && !exerciseEnded && exercisePaused) {
       //exercicio pausado
-      return buttonConfig = {
-        'label': 'Retomar',
-        'color': '#FFF06D',
-        'state': 2
-      };
+      return 2;
     }
     if (!exerciseStarted && exerciseEnded && !exercisePaused) {
       //exercicio acabou
-      return buttonConfig = {
-        'label': 'Recomeçar',
-        'color': '#79FF6D',
-        'state': 3
-      };
+      return 3;
+    }
+    return 0;
+  }
+
+  Map getExerciseButtonConfig() {
+    Map buttonConfig = {'label': 'Começar!', 'color': '#79FF6D'};
+    if (getTimerState() == 1) {
+      //exercicio rolando
+      return buttonConfig = {'label': 'Pausar', 'color': '#FFF06D'};
+    }
+    if (getTimerState() == 2) {
+      //exercicio pausado
+      return buttonConfig = {'label': 'Retomar', 'color': '#FFF06D'};
+    }
+    if (getTimerState() == 3) {
+      //exercicio acabou
+      return buttonConfig = {'label': 'Recomeçar', 'color': '#79FF6D'};
     }
     return buttonConfig;
   }
 
-  String formatExerciseTimer() {
-    if (exerciseTimer == 0) {
+  Map getEffectPhrase() {
+    Map effectPhraseStyle = {'label': 'Pronto?', 'color': '#FFFFFF'};
+    if (getTimerState() == 1) {
+      //exercicio rolando
+      return effectPhraseStyle = {'label': 'Força!', 'color': '#79FF6D'};
+    }
+    if (getTimerState() == 2) {
+      //exercicio pausado
+      return {'label': 'Pausado', 'color': '#FFF06D'};
+    }
+    if (getTimerState() == 3) {
+      //exercicio acabou
+      return {'label': 'Exercício finalizado!', 'color': '#FFFFFF'};
+    }
+    return effectPhraseStyle;
+  }
+
+  String formatTimer(String timerType) {
+    if (timerType == 'exercise') {
+      if (exerciseTimer == 0) {
+        return '00:00';
+      }
+      if (exerciseTimer < 10) {
+        return '00:0$exerciseTimer';
+      }
+      if (exerciseTimer >= 10 && exerciseTimer < 60) {
+        return '00:$exerciseTimer';
+      }
+      String durationFromExercise = Duration(seconds: exerciseTimer).toString();
+      String formatedFullDuration =
+          durationFromExercise.split('.')[0].padLeft(8, '0');
+      String formatedMinutesAndSecondsDuration =
+          '${formatedFullDuration.split(':')[1]}:${formatedFullDuration.split(':')[2]}';
+      return formatedMinutesAndSecondsDuration;
+    }
+    if (restTimer == 0) {
       return '00:00';
     }
-    if (exerciseTimer < 10) {
-      return '00:0$exerciseTimer';
+    if (restTimer < 10) {
+      return '00:0$restTimer';
     }
-    if (exerciseTimer >= 10 && exerciseTimer < 60) {
-      return '00:$exerciseTimer';
+    if (restTimer >= 10 && restTimer < 60) {
+      return '00:$restTimer';
     }
-    String durationFromExercise = Duration(seconds: exerciseTimer).toString();
+    String durationFromExercise = Duration(seconds: restTimer).toString();
     String formatedFullDuration =
         durationFromExercise.split('.')[0].padLeft(8, '0');
     String formatedMinutesAndSecondsDuration =

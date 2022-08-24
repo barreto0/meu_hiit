@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:meu_hiit/app/modules/extensions/hex_color.dart';
 import 'package:meu_hiit/app/modules/helpers/screen_helper.dart';
 
 import 'color_helper.dart';
@@ -37,17 +38,19 @@ class TextStyleHelper {
     );
   }
 
-  static TextStyle exercisePhraseIDLE(BuildContext context) {
+  static TextStyle exercisePhraseIDLE(
+      {required BuildContext context, required String color}) {
     return GoogleFonts.inter(
-      color: Colors.white,
+      color: HexColor.fromHex(color),
       fontWeight: FontWeight.w700,
       fontSize: ScreenHelper.screenHeightPercentage(context, 7),
     );
   }
 
-  static TextStyle exerciseClockTextIDLE(BuildContext context) {
+  static TextStyle exerciseClockTextIDLE(
+      {required BuildContext context, required String color}) {
     return GoogleFonts.inter(
-      color: Colors.white,
+      color: HexColor.fromHex(color),
       fontWeight: FontWeight.w700,
       fontSize: ScreenHelper.screenHeightPercentage(context, 10),
     );

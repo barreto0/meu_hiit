@@ -89,6 +89,70 @@ mixin _$HomeStore on HomeStoreBase, Store {
     });
   }
 
+  late final _$totalRoundsAtom =
+      Atom(name: 'HomeStoreBase.totalRounds', context: context);
+
+  @override
+  int get totalRounds {
+    _$totalRoundsAtom.reportRead();
+    return super.totalRounds;
+  }
+
+  @override
+  set totalRounds(int value) {
+    _$totalRoundsAtom.reportWrite(value, super.totalRounds, () {
+      super.totalRounds = value;
+    });
+  }
+
+  late final _$totalCyclesAtom =
+      Atom(name: 'HomeStoreBase.totalCycles', context: context);
+
+  @override
+  int get totalCycles {
+    _$totalCyclesAtom.reportRead();
+    return super.totalCycles;
+  }
+
+  @override
+  set totalCycles(int value) {
+    _$totalCyclesAtom.reportWrite(value, super.totalCycles, () {
+      super.totalCycles = value;
+    });
+  }
+
+  late final _$currentRoundAtom =
+      Atom(name: 'HomeStoreBase.currentRound', context: context);
+
+  @override
+  int get currentRound {
+    _$currentRoundAtom.reportRead();
+    return super.currentRound;
+  }
+
+  @override
+  set currentRound(int value) {
+    _$currentRoundAtom.reportWrite(value, super.currentRound, () {
+      super.currentRound = value;
+    });
+  }
+
+  late final _$currentCycleAtom =
+      Atom(name: 'HomeStoreBase.currentCycle', context: context);
+
+  @override
+  int get currentCycle {
+    _$currentCycleAtom.reportRead();
+    return super.currentCycle;
+  }
+
+  @override
+  set currentCycle(int value) {
+    _$currentCycleAtom.reportWrite(value, super.currentCycle, () {
+      super.currentCycle = value;
+    });
+  }
+
   late final _$HomeStoreBaseActionController =
       ActionController(name: 'HomeStoreBase', context: context);
 
@@ -109,6 +173,50 @@ mixin _$HomeStore on HomeStoreBase, Store {
         name: 'HomeStoreBase.decreaseExerciseTimer');
     try {
       return super.decreaseExerciseTimer();
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void increaseTotalRounds() {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.increaseTotalRounds');
+    try {
+      return super.increaseTotalRounds();
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void decreaseTotalRounds() {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.decreaseTotalRounds');
+    try {
+      return super.decreaseTotalRounds();
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void increaseTotalCycles() {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.increaseTotalCycles');
+    try {
+      return super.increaseTotalCycles();
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void decreaseTotalCycles() {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.decreaseTotalCycles');
+    try {
+      return super.decreaseTotalCycles();
     } finally {
       _$HomeStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -165,7 +273,11 @@ exerciseStarted: ${exerciseStarted},
 exercisePaused: ${exercisePaused},
 exerciseEnded: ${exerciseEnded},
 exerciseTimer: ${exerciseTimer},
-restTimer: ${restTimer}
+restTimer: ${restTimer},
+totalRounds: ${totalRounds},
+totalCycles: ${totalCycles},
+currentRound: ${currentRound},
+currentCycle: ${currentCycle}
     ''';
   }
 }

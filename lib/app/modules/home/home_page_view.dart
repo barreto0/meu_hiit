@@ -23,12 +23,16 @@ class HomePageView extends HomePageViewModel {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
+                  children: [
                     RoundCycleCounter(
                       title: 'Rounds',
+                      current: homeStore.currentRound.toString(),
+                      total: homeStore.totalRounds.toString(),
                     ),
                     RoundCycleCounter(
                       title: 'Ciclos',
+                      current: homeStore.currentCycle.toString(),
+                      total: homeStore.totalCycles.toString(),
                     ),
                   ],
                 ),

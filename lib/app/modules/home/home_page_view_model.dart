@@ -20,7 +20,7 @@ abstract class HomePageViewModel extends State<HomePage> {
   Widget getExerciseButton() {
     String label = homeStore.getExerciseButtonConfig()['label'];
     String color = homeStore.getExerciseButtonConfig()['color'];
-    int state = homeStore.getExerciseButtonConfig()['state'];
+    int state = homeStore.getTimerState();
     return MeuHiitButton(
       width: ScreenHelper.screenWidth(context),
       onPressed: () {
@@ -48,7 +48,7 @@ abstract class HomePageViewModel extends State<HomePage> {
   }
 
   Widget getStopAndSkipButtons() {
-    int state = homeStore.getExerciseButtonConfig()['state'];
+    int state = homeStore.getTimerState();
     if (state == 1 || state == 2) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
