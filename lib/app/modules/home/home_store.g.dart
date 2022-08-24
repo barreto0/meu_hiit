@@ -126,6 +126,17 @@ mixin _$HomeStore on HomeStoreBase, Store {
   }
 
   @override
+  void stopTimer() {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.stopTimer');
+    try {
+      return super.stopTimer();
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 exerciseStarted: ${exerciseStarted},

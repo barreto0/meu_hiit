@@ -46,4 +46,30 @@ abstract class HomePageViewModel extends State<HomePage> {
       color: color,
     );
   }
+
+  Widget getStopAndSkipButtons() {
+    int state = homeStore.getExerciseButtonConfig()['state'];
+    if (state == 1 || state == 2) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          MeuHiitButton(
+            width: ScreenHelper.screenWidthPercentage(context, 45),
+            onPressed: () {
+              homeStore.stopTimer();
+            },
+            label: 'Parar',
+            color: '#FF6D6D',
+          ),
+          MeuHiitButton(
+            width: ScreenHelper.screenWidthPercentage(context, 45),
+            onPressed: () {},
+            label: 'Pular',
+            color: '#706DFF',
+          ),
+        ],
+      );
+    }
+    return Container();
+  }
 }

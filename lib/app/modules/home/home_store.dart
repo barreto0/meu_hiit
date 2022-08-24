@@ -19,7 +19,7 @@ abstract class HomeStoreBase with Store {
   bool exerciseEnded = false;
 
   @observable
-  int exerciseTimer = 30;
+  int exerciseTimer = 60;
 
   @observable
   int restTimer = 30;
@@ -52,6 +52,15 @@ abstract class HomeStoreBase with Store {
   void continueTimer() {
     exercisePaused = false;
     startTimer();
+  }
+
+  @action
+  void stopTimer() {
+    exerciseStarted = false;
+    exerciseEnded = false;
+    exercisePaused = false;
+    timer?.cancel();
+    exerciseTimer = 60;
   }
 
   Map getExerciseButtonConfig() {
