@@ -110,6 +110,38 @@ abstract class HomeStoreBase with Store {
   }
 
   @action
+  startRestTimer() {
+    exerciseState = ExerciseState.REST;
+    const oneSec = Duration(seconds: 1);
+    rTimer = Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (restTimer == 0) {
+          timer.cancel();
+          nextRound();
+        } else {
+          restTimer--;
+        }
+      },
+    );
+  }
+
+  @action
+  void nextRound() {
+    if (currentRound < totalRounds) {
+      currentRound++;
+      exerciseTimer = exerciseTimerConfigBuffer;
+      restTimer = restTimerConfigBuffer;
+      startExerciseTimer();
+      return;
+    }
+    if (currentRound == totalRounds) {
+      exerciseState = ExerciseState.FINISHED;
+      return;
+    }
+  }
+
+  @action
   void pauseExerciseTimer() {
     exerciseState = ExerciseState.PAUSED;
     timer?.cancel();
@@ -126,30 +158,6 @@ abstract class HomeStoreBase with Store {
     exerciseState = ExerciseState.IDLE;
     timer?.cancel();
     exerciseTimer = exerciseTimerConfigBuffer;
-  }
-
-  @action
-  startRestTimer() {
-    exerciseState = ExerciseState.REST;
-    const oneSec = Duration(seconds: 1);
-    rTimer = Timer.periodic(
-      oneSec,
-      (Timer timer) {
-        if (restTimer == 0) {
-          timer.cancel();
-          if (currentRound < totalRounds) {
-            currentRound++;
-            exerciseTimer = exerciseTimerConfigBuffer;
-            restTimer = restTimerConfigBuffer;
-            startExerciseTimer();
-          } else if (currentRound == totalRounds) {
-            exerciseState = ExerciseState.FINISHED;
-          }
-        } else {
-          restTimer--;
-        }
-      },
-    );
   }
 
   @action
