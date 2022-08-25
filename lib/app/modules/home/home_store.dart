@@ -9,6 +9,7 @@ class HomeStore = HomeStoreBase with _$HomeStore;
 
 abstract class HomeStoreBase with Store {
   Timer? timer;
+  Timer? rTimer;
 
   @observable
   ExerciseState exerciseState = ExerciseState.IDLE;
@@ -17,13 +18,25 @@ abstract class HomeStoreBase with Store {
   int exerciseTimer = 60;
 
   @observable
+  int exerciseTimerConfigBuffer = 60;
+
+  @observable
   int restTimer = 30;
+
+  @observable
+  int restTimerConfigBuffer = 30;
 
   @observable
   int totalRounds = 6;
 
   @observable
+  int totalRoundsConfigBuffer = 6;
+
+  @observable
   int totalCycles = 6;
+
+  @observable
+  int totalCyclesConfigBuffer = 6;
 
   @observable
   int currentRound = 1;
@@ -72,7 +85,7 @@ abstract class HomeStoreBase with Store {
   }
 
   @action
-  void startTimer() {
+  startExerciseTimer() {
     exerciseState = ExerciseState.STARTED;
     const oneSec = Duration(seconds: 1);
     timer = Timer.periodic(
@@ -80,7 +93,13 @@ abstract class HomeStoreBase with Store {
       (Timer timer) {
         if (exerciseTimer == 0) {
           timer.cancel();
-          exerciseState = ExerciseState.FINISHED;
+          if (currentRound < totalRounds) {
+            exerciseState = ExerciseState.REST;
+            startRestTimer();
+          }
+          if (currentRound == totalRounds) {
+            exerciseState = ExerciseState.FINISHED;
+          }
         } else {
           exerciseTimer--;
         }
@@ -89,22 +108,79 @@ abstract class HomeStoreBase with Store {
   }
 
   @action
-  void pauseTimer() {
+  void pauseExerciseTimer() {
     exerciseState = ExerciseState.PAUSED;
     timer?.cancel();
   }
 
   @action
-  void continueTimer() {
+  void continueExerciseTimer() {
     exerciseState = ExerciseState.STARTED;
-    startTimer();
+    startExerciseTimer();
   }
 
   @action
-  void stopTimer() {
+  void stopExerciseTimer() {
     exerciseState = ExerciseState.IDLE;
     timer?.cancel();
     exerciseTimer = 60;
+  }
+
+  @action
+  startRestTimer() {
+    exerciseState = ExerciseState.REST;
+    const oneSec = Duration(seconds: 1);
+    rTimer = Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (restTimer == 0) {
+          timer.cancel();
+          exerciseState = ExerciseState.STARTED;
+          startExerciseTimer();
+          exerciseTimer = exerciseTimerConfigBuffer;
+          restTimer = restTimerConfigBuffer;
+          currentRound++;
+        } else {
+          restTimer--;
+        }
+      },
+    );
+  }
+
+  @action
+  void pauseRestTimer() {
+    exerciseState = ExerciseState.PAUSED;
+    rTimer?.cancel();
+  }
+
+  @action
+  void stopRestTimer() {
+    exerciseState = ExerciseState.IDLE;
+    rTimer?.cancel();
+    restTimer = 30;
+  }
+
+  @action
+  exerciseRoutine() async {
+    for (int i = 0; i < totalCycles; i++) {
+      for (int j = 0; j < totalRounds; j++) {
+        await startExerciseTimer();
+        await startRestTimer();
+        currentRound++;
+      }
+      currentCycle++;
+    }
+  }
+
+  @action
+  void resetExercise() {
+    exerciseState = ExerciseState.IDLE;
+    exerciseTimer = exerciseTimerConfigBuffer;
+    restTimer = restTimerConfigBuffer;
+    totalRounds = totalRoundsConfigBuffer;
+    totalCycles = totalCyclesConfigBuffer;
+    currentRound = 1;
+    currentCycle = 6;
   }
 
   Map getExerciseButtonConfig() {
@@ -117,9 +193,13 @@ abstract class HomeStoreBase with Store {
       //exercicio pausado
       return buttonConfig = {'label': 'Retomar', 'color': '#FFF06D'};
     }
+    if (exerciseState == ExerciseState.REST) {
+      //tempo de descanso
+      return buttonConfig = {'label': 'Pausar', 'color': '#6DFFF6'};
+    }
     if (exerciseState == ExerciseState.FINISHED) {
       //exercicio acabou
-      return buttonConfig = {'label': 'Recomeçar', 'color': '#79FF6D'};
+      return buttonConfig = {'label': 'Finalizar', 'color': '#79FF6D'};
     }
     return buttonConfig;
   }
@@ -133,6 +213,10 @@ abstract class HomeStoreBase with Store {
     if (exerciseState == ExerciseState.PAUSED) {
       //exercicio pausado
       return {'label': 'Pausado', 'color': '#FFF06D'};
+    }
+    if (exerciseState == ExerciseState.REST) {
+      //tempo de descanso
+      return {'label': 'Devagar', 'color': '#6DFFF6'};
     }
     if (exerciseState == ExerciseState.FINISHED) {
       //exercicio acabou

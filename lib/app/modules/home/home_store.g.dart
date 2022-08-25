@@ -41,6 +41,23 @@ mixin _$HomeStore on HomeStoreBase, Store {
     });
   }
 
+  late final _$exerciseTimerConfigBufferAtom =
+      Atom(name: 'HomeStoreBase.exerciseTimerConfigBuffer', context: context);
+
+  @override
+  int get exerciseTimerConfigBuffer {
+    _$exerciseTimerConfigBufferAtom.reportRead();
+    return super.exerciseTimerConfigBuffer;
+  }
+
+  @override
+  set exerciseTimerConfigBuffer(int value) {
+    _$exerciseTimerConfigBufferAtom
+        .reportWrite(value, super.exerciseTimerConfigBuffer, () {
+      super.exerciseTimerConfigBuffer = value;
+    });
+  }
+
   late final _$restTimerAtom =
       Atom(name: 'HomeStoreBase.restTimer', context: context);
 
@@ -54,6 +71,23 @@ mixin _$HomeStore on HomeStoreBase, Store {
   set restTimer(int value) {
     _$restTimerAtom.reportWrite(value, super.restTimer, () {
       super.restTimer = value;
+    });
+  }
+
+  late final _$restTimerConfigBufferAtom =
+      Atom(name: 'HomeStoreBase.restTimerConfigBuffer', context: context);
+
+  @override
+  int get restTimerConfigBuffer {
+    _$restTimerConfigBufferAtom.reportRead();
+    return super.restTimerConfigBuffer;
+  }
+
+  @override
+  set restTimerConfigBuffer(int value) {
+    _$restTimerConfigBufferAtom.reportWrite(value, super.restTimerConfigBuffer,
+        () {
+      super.restTimerConfigBuffer = value;
     });
   }
 
@@ -73,6 +107,23 @@ mixin _$HomeStore on HomeStoreBase, Store {
     });
   }
 
+  late final _$totalRoundsConfigBufferAtom =
+      Atom(name: 'HomeStoreBase.totalRoundsConfigBuffer', context: context);
+
+  @override
+  int get totalRoundsConfigBuffer {
+    _$totalRoundsConfigBufferAtom.reportRead();
+    return super.totalRoundsConfigBuffer;
+  }
+
+  @override
+  set totalRoundsConfigBuffer(int value) {
+    _$totalRoundsConfigBufferAtom
+        .reportWrite(value, super.totalRoundsConfigBuffer, () {
+      super.totalRoundsConfigBuffer = value;
+    });
+  }
+
   late final _$totalCyclesAtom =
       Atom(name: 'HomeStoreBase.totalCycles', context: context);
 
@@ -86,6 +137,23 @@ mixin _$HomeStore on HomeStoreBase, Store {
   set totalCycles(int value) {
     _$totalCyclesAtom.reportWrite(value, super.totalCycles, () {
       super.totalCycles = value;
+    });
+  }
+
+  late final _$totalCyclesConfigBufferAtom =
+      Atom(name: 'HomeStoreBase.totalCyclesConfigBuffer', context: context);
+
+  @override
+  int get totalCyclesConfigBuffer {
+    _$totalCyclesConfigBufferAtom.reportRead();
+    return super.totalCyclesConfigBuffer;
+  }
+
+  @override
+  set totalCyclesConfigBuffer(int value) {
+    _$totalCyclesConfigBufferAtom
+        .reportWrite(value, super.totalCyclesConfigBuffer, () {
+      super.totalCyclesConfigBuffer = value;
     });
   }
 
@@ -119,6 +187,14 @@ mixin _$HomeStore on HomeStoreBase, Store {
     _$currentCycleAtom.reportWrite(value, super.currentCycle, () {
       super.currentCycle = value;
     });
+  }
+
+  late final _$exerciseRoutineAsyncAction =
+      AsyncAction('HomeStoreBase.exerciseRoutine', context: context);
+
+  @override
+  Future exerciseRoutine() {
+    return _$exerciseRoutineAsyncAction.run(() => super.exerciseRoutine());
   }
 
   late final _$HomeStoreBaseActionController =
@@ -213,44 +289,88 @@ mixin _$HomeStore on HomeStoreBase, Store {
   }
 
   @override
-  void startTimer() {
+  dynamic startExerciseTimer() {
     final _$actionInfo = _$HomeStoreBaseActionController.startAction(
-        name: 'HomeStoreBase.startTimer');
+        name: 'HomeStoreBase.startExerciseTimer');
     try {
-      return super.startTimer();
+      return super.startExerciseTimer();
     } finally {
       _$HomeStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void pauseTimer() {
+  void pauseExerciseTimer() {
     final _$actionInfo = _$HomeStoreBaseActionController.startAction(
-        name: 'HomeStoreBase.pauseTimer');
+        name: 'HomeStoreBase.pauseExerciseTimer');
     try {
-      return super.pauseTimer();
+      return super.pauseExerciseTimer();
     } finally {
       _$HomeStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void continueTimer() {
+  void continueExerciseTimer() {
     final _$actionInfo = _$HomeStoreBaseActionController.startAction(
-        name: 'HomeStoreBase.continueTimer');
+        name: 'HomeStoreBase.continueExerciseTimer');
     try {
-      return super.continueTimer();
+      return super.continueExerciseTimer();
     } finally {
       _$HomeStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void stopTimer() {
+  void stopExerciseTimer() {
     final _$actionInfo = _$HomeStoreBaseActionController.startAction(
-        name: 'HomeStoreBase.stopTimer');
+        name: 'HomeStoreBase.stopExerciseTimer');
     try {
-      return super.stopTimer();
+      return super.stopExerciseTimer();
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic startRestTimer() {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.startRestTimer');
+    try {
+      return super.startRestTimer();
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void pauseRestTimer() {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.pauseRestTimer');
+    try {
+      return super.pauseRestTimer();
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void stopRestTimer() {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.stopRestTimer');
+    try {
+      return super.stopRestTimer();
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void resetExercise() {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.resetExercise');
+    try {
+      return super.resetExercise();
     } finally {
       _$HomeStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -261,9 +381,13 @@ mixin _$HomeStore on HomeStoreBase, Store {
     return '''
 exerciseState: ${exerciseState},
 exerciseTimer: ${exerciseTimer},
+exerciseTimerConfigBuffer: ${exerciseTimerConfigBuffer},
 restTimer: ${restTimer},
+restTimerConfigBuffer: ${restTimerConfigBuffer},
 totalRounds: ${totalRounds},
+totalRoundsConfigBuffer: ${totalRoundsConfigBuffer},
 totalCycles: ${totalCycles},
+totalCyclesConfigBuffer: ${totalCyclesConfigBuffer},
 currentRound: ${currentRound},
 currentCycle: ${currentCycle}
     ''';

@@ -13,10 +13,10 @@ abstract class HomePageViewModel extends State<HomePage> {
 
   Widget showConfigureExercise() {
     ExerciseState state = homeStore.exerciseState;
-    if (state == ExerciseState.STARTED || state == ExerciseState.PAUSED) {
-      return Container();
+    if (state == ExerciseState.IDLE) {
+      return ConfigureExercise();
     }
-    return ConfigureExercise();
+    return Container();
   }
 
   Widget getExerciseButton() {
@@ -29,19 +29,19 @@ abstract class HomePageViewModel extends State<HomePage> {
         switch (state) {
           case ExerciseState.IDLE:
             //idle
-            homeStore.startTimer();
+            homeStore.startExerciseTimer();
             break;
           case ExerciseState.STARTED:
-            homeStore.pauseTimer();
+            homeStore.pauseExerciseTimer();
             break;
           case ExerciseState.REST:
-            // TODO: Handle this case.
+            homeStore.pauseRestTimer();
             break;
           case ExerciseState.PAUSED:
-            homeStore.continueTimer();
+            homeStore.continueExerciseTimer();
             break;
           case ExerciseState.FINISHED:
-            // TODO: Handle this case.
+            homeStore.resetExercise();
             break;
         }
       },
@@ -59,7 +59,7 @@ abstract class HomePageViewModel extends State<HomePage> {
           MeuHiitButton(
             width: ScreenHelper.screenWidthPercentage(context, 45),
             onPressed: () {
-              homeStore.stopTimer();
+              homeStore.stopExerciseTimer();
             },
             label: 'Parar',
             color: '#FF6D6D',

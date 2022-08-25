@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:meu_hiit/app/modules/enums/exercise_state.dart';
 import 'package:meu_hiit/app/modules/helpers/text_style_helper.dart';
 import 'package:meu_hiit/app/modules/home/home_store.dart';
 
@@ -26,7 +27,9 @@ class _ExerciseClockState extends State<ExerciseClock> {
                 context: context, color: homeStore.getEffectPhrase()['color']),
           ),
           Text(
-            homeStore.formatTimer('exercise'),
+            homeStore.exerciseState == ExerciseState.REST
+                ? homeStore.formatTimer('rest')
+                : homeStore.formatTimer('exercise'),
             style: TextStyleHelper.exerciseClockTextIDLE(
                 context: context, color: homeStore.getEffectPhrase()['color']),
           )
