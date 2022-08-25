@@ -28,8 +28,8 @@ class _ExerciseClockState extends State<ExerciseClock> {
           ),
           Text(
             homeStore.exerciseState == ExerciseState.REST
-                ? homeStore.formatTimer('rest')
-                : homeStore.formatTimer('exercise'),
+                ? homeStore.formatTimer(homeStore.restTimer)
+                : homeStore.formatTimer(homeStore.exerciseTimer),
             style: TextStyleHelper.exerciseClockTextIDLE(
                 context: context, color: homeStore.getEffectPhrase()['color']),
           )

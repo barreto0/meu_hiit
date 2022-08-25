@@ -30,7 +30,8 @@ class ConfigureExercise extends StatelessWidget {
                   children: [
                     ConfigureExerciseItem(
                         label: 'Exercício',
-                        count: homeStore.formatTimer('exercise'),
+                        count: homeStore
+                            .formatTimer(homeStore.exerciseTimerConfigBuffer),
                         add: () {
                           homeStore.increaseExerciseTimer();
                         },
@@ -39,7 +40,8 @@ class ConfigureExercise extends StatelessWidget {
                         }),
                     ConfigureExerciseItem(
                         label: 'Descanso',
-                        count: homeStore.formatTimer('rest'),
+                        count: homeStore
+                            .formatTimer(homeStore.restTimerConfigBuffer),
                         add: () {
                           homeStore.increaseRestTimer();
                         },
@@ -48,7 +50,7 @@ class ConfigureExercise extends StatelessWidget {
                         }),
                     ConfigureExerciseItem(
                         label: 'Rounds',
-                        count: homeStore.totalRounds.toString(),
+                        count: homeStore.totalRoundsConfigBuffer.toString(),
                         add: () {
                           homeStore.increaseTotalRounds();
                         },
@@ -57,7 +59,7 @@ class ConfigureExercise extends StatelessWidget {
                         }),
                     ConfigureExerciseItem(
                         label: 'Ciclos',
-                        count: homeStore.totalCycles.toString(),
+                        count: homeStore.totalCyclesConfigBuffer.toString(),
                         add: () {
                           homeStore.increaseTotalCycles();
                         },
@@ -69,7 +71,10 @@ class ConfigureExercise extends StatelessWidget {
                     ),
                     MeuHiitButton(
                       width: ScreenHelper.screenWidth(context),
-                      onPressed: () {},
+                      onPressed: () {
+                        homeStore.saveExerciseConfig();
+                        Modular.to.pop();
+                      },
                       label: 'Salvar',
                       color: '#79FF6D',
                     )

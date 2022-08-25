@@ -289,6 +289,17 @@ mixin _$HomeStore on HomeStoreBase, Store {
   }
 
   @override
+  void saveExerciseConfig() {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.saveExerciseConfig');
+    try {
+      return super.saveExerciseConfig();
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic startExerciseTimer() {
     final _$actionInfo = _$HomeStoreBaseActionController.startAction(
         name: 'HomeStoreBase.startExerciseTimer');

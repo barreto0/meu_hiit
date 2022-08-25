@@ -46,42 +46,50 @@ abstract class HomeStoreBase with Store {
 
   @action
   void increaseExerciseTimer() {
-    if (exerciseTimer < 3600) exerciseTimer++;
+    if (exerciseTimerConfigBuffer < 3600) exerciseTimerConfigBuffer++;
   }
 
   @action
   void decreaseExerciseTimer() {
-    if (exerciseTimer > 10) exerciseTimer--;
+    if (exerciseTimerConfigBuffer > 10) exerciseTimerConfigBuffer--;
   }
 
   @action
   void increaseRestTimer() {
-    if (restTimer < 3600) restTimer++;
+    if (restTimerConfigBuffer < 3600) restTimerConfigBuffer++;
   }
 
   @action
   void decreaseRestTimer() {
-    if (restTimer > 10) restTimer--;
+    if (restTimerConfigBuffer > 10) restTimerConfigBuffer--;
   }
 
   @action
   void increaseTotalRounds() {
-    if (totalRounds < 100) totalRounds++;
+    if (totalRoundsConfigBuffer < 100) totalRoundsConfigBuffer++;
   }
 
   @action
   void decreaseTotalRounds() {
-    if (totalRounds > 1) totalRounds--;
+    if (totalRoundsConfigBuffer > 1) totalRoundsConfigBuffer--;
   }
 
   @action
   void increaseTotalCycles() {
-    if (totalCycles < 100) totalCycles++;
+    if (totalCyclesConfigBuffer < 100) totalCyclesConfigBuffer++;
   }
 
   @action
   void decreaseTotalCycles() {
-    if (totalCycles > 1) totalCycles--;
+    if (totalCyclesConfigBuffer > 1) totalCyclesConfigBuffer--;
+  }
+
+  @action
+  void saveExerciseConfig() {
+    exerciseTimer = exerciseTimerConfigBuffer;
+    restTimer = restTimerConfigBuffer;
+    totalRounds = totalRoundsConfigBuffer;
+    totalCycles = totalCyclesConfigBuffer;
   }
 
   @action
@@ -93,13 +101,7 @@ abstract class HomeStoreBase with Store {
       (Timer timer) {
         if (exerciseTimer == 0) {
           timer.cancel();
-          if (currentRound < totalRounds) {
-            exerciseState = ExerciseState.REST;
-            startRestTimer();
-          }
-          if (currentRound == totalRounds) {
-            exerciseState = ExerciseState.FINISHED;
-          }
+          startRestTimer();
         } else {
           exerciseTimer--;
         }
@@ -123,7 +125,7 @@ abstract class HomeStoreBase with Store {
   void stopExerciseTimer() {
     exerciseState = ExerciseState.IDLE;
     timer?.cancel();
-    exerciseTimer = 60;
+    exerciseTimer = exerciseTimerConfigBuffer;
   }
 
   @action
@@ -135,11 +137,14 @@ abstract class HomeStoreBase with Store {
       (Timer timer) {
         if (restTimer == 0) {
           timer.cancel();
-          exerciseState = ExerciseState.STARTED;
-          startExerciseTimer();
-          exerciseTimer = exerciseTimerConfigBuffer;
-          restTimer = restTimerConfigBuffer;
-          currentRound++;
+          if (currentRound < totalRounds) {
+            currentRound++;
+            exerciseTimer = exerciseTimerConfigBuffer;
+            restTimer = restTimerConfigBuffer;
+            startExerciseTimer();
+          } else if (currentRound == totalRounds) {
+            exerciseState = ExerciseState.FINISHED;
+          }
         } else {
           restTimer--;
         }
@@ -157,7 +162,7 @@ abstract class HomeStoreBase with Store {
   void stopRestTimer() {
     exerciseState = ExerciseState.IDLE;
     rTimer?.cancel();
-    restTimer = 30;
+    restTimer = restTimerConfigBuffer;
   }
 
   @action
@@ -180,7 +185,7 @@ abstract class HomeStoreBase with Store {
     totalRounds = totalRoundsConfigBuffer;
     totalCycles = totalCyclesConfigBuffer;
     currentRound = 1;
-    currentCycle = 6;
+    currentCycle = 1;
   }
 
   Map getExerciseButtonConfig() {
@@ -225,34 +230,17 @@ abstract class HomeStoreBase with Store {
     return effectPhraseStyle;
   }
 
-  String formatTimer(String timerType) {
-    if (timerType == 'exercise') {
-      if (exerciseTimer == 0) {
-        return '00:00';
-      }
-      if (exerciseTimer < 10) {
-        return '00:0$exerciseTimer';
-      }
-      if (exerciseTimer >= 10 && exerciseTimer < 60) {
-        return '00:$exerciseTimer';
-      }
-      String durationFromExercise = Duration(seconds: exerciseTimer).toString();
-      String formatedFullDuration =
-          durationFromExercise.split('.')[0].padLeft(8, '0');
-      String formatedMinutesAndSecondsDuration =
-          '${formatedFullDuration.split(':')[1]}:${formatedFullDuration.split(':')[2]}';
-      return formatedMinutesAndSecondsDuration;
-    }
-    if (restTimer == 0) {
+  String formatTimer(int timer) {
+    if (timer == 0) {
       return '00:00';
     }
-    if (restTimer < 10) {
-      return '00:0$restTimer';
+    if (timer < 10) {
+      return '00:0$timer';
     }
-    if (restTimer >= 10 && restTimer < 60) {
-      return '00:$restTimer';
+    if (timer >= 10 && timer < 60) {
+      return '00:$timer';
     }
-    String durationFromExercise = Duration(seconds: restTimer).toString();
+    String durationFromExercise = Duration(seconds: timer).toString();
     String formatedFullDuration =
         durationFromExercise.split('.')[0].padLeft(8, '0');
     String formatedMinutesAndSecondsDuration =
