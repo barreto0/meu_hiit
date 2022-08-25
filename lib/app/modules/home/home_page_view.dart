@@ -40,6 +40,9 @@ class HomePageView extends HomePageViewModel {
                 Column(
                   children: [
                     getExerciseButton(),
+                    SizedBox(
+                      height: ScreenHelper.screenHeightPercentage(context, 2),
+                    ),
                     getStopAndSkipButtons(),
                     SizedBox(
                       height: ScreenHelper.screenHeightPercentage(context, 4),

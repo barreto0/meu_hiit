@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:meu_hiit/app/modules/enums/exercise_state.dart';
 import 'package:meu_hiit/app/modules/home/home_store.dart';
 import 'package:meu_hiit/app/modules/home/widgets/configure_exercise/configure_exercise.dart';
 
@@ -11,7 +12,8 @@ abstract class HomePageViewModel extends State<HomePage> {
   HomeStore homeStore = Modular.get<HomeStore>();
 
   Widget showConfigureExercise() {
-    if (homeStore.exerciseStarted || homeStore.exercisePaused) {
+    ExerciseState state = homeStore.exerciseState;
+    if (state == ExerciseState.STARTED || state == ExerciseState.PAUSED) {
       return Container();
     }
     return ConfigureExercise();
@@ -20,25 +22,26 @@ abstract class HomePageViewModel extends State<HomePage> {
   Widget getExerciseButton() {
     String label = homeStore.getExerciseButtonConfig()['label'];
     String color = homeStore.getExerciseButtonConfig()['color'];
-    int state = homeStore.getTimerState();
+    ExerciseState state = homeStore.exerciseState;
     return MeuHiitButton(
       width: ScreenHelper.screenWidth(context),
       onPressed: () {
         switch (state) {
-          case 0:
+          case ExerciseState.IDLE:
             //idle
             homeStore.startTimer();
             break;
-          case 1:
-            //rolando
+          case ExerciseState.STARTED:
             homeStore.pauseTimer();
             break;
-          case 2:
-            //pausado
+          case ExerciseState.REST:
+            // TODO: Handle this case.
+            break;
+          case ExerciseState.PAUSED:
             homeStore.continueTimer();
             break;
-          case 3:
-            //acabou
+          case ExerciseState.FINISHED:
+            // TODO: Handle this case.
             break;
         }
       },
@@ -48,8 +51,8 @@ abstract class HomePageViewModel extends State<HomePage> {
   }
 
   Widget getStopAndSkipButtons() {
-    int state = homeStore.getTimerState();
-    if (state == 1 || state == 2) {
+    ExerciseState state = homeStore.exerciseState;
+    if (state == ExerciseState.STARTED || state == ExerciseState.PAUSED) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

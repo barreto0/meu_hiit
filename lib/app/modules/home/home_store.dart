@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:meu_hiit/app/modules/enums/exercise_state.dart';
 import 'package:mobx/mobx.dart';
 
 part 'home_store.g.dart';
@@ -10,13 +11,7 @@ abstract class HomeStoreBase with Store {
   Timer? timer;
 
   @observable
-  bool exerciseStarted = false;
-
-  @observable
-  bool exercisePaused = false;
-
-  @observable
-  bool exerciseEnded = false;
+  ExerciseState exerciseState = ExerciseState.IDLE;
 
   @observable
   int exerciseTimer = 60;
@@ -78,15 +73,14 @@ abstract class HomeStoreBase with Store {
 
   @action
   void startTimer() {
-    exerciseStarted = true;
+    exerciseState = ExerciseState.STARTED;
     const oneSec = Duration(seconds: 1);
     timer = Timer.periodic(
       oneSec,
       (Timer timer) {
         if (exerciseTimer == 0) {
           timer.cancel();
-          exerciseStarted = false;
-          exerciseEnded = true;
+          exerciseState = ExerciseState.FINISHED;
         } else {
           exerciseTimer--;
         }
@@ -96,52 +90,34 @@ abstract class HomeStoreBase with Store {
 
   @action
   void pauseTimer() {
-    exercisePaused = true;
+    exerciseState = ExerciseState.PAUSED;
     timer?.cancel();
   }
 
   @action
   void continueTimer() {
-    exercisePaused = false;
+    exerciseState = ExerciseState.STARTED;
     startTimer();
   }
 
   @action
   void stopTimer() {
-    exerciseStarted = false;
-    exerciseEnded = false;
-    exercisePaused = false;
+    exerciseState = ExerciseState.IDLE;
     timer?.cancel();
     exerciseTimer = 60;
   }
 
-  int getTimerState() {
-    if (exerciseStarted && !exerciseEnded && !exercisePaused) {
-      //exercicio rolando
-      return 1;
-    }
-    if (exerciseStarted && !exerciseEnded && exercisePaused) {
-      //exercicio pausado
-      return 2;
-    }
-    if (!exerciseStarted && exerciseEnded && !exercisePaused) {
-      //exercicio acabou
-      return 3;
-    }
-    return 0;
-  }
-
   Map getExerciseButtonConfig() {
     Map buttonConfig = {'label': 'Começar!', 'color': '#79FF6D'};
-    if (getTimerState() == 1) {
+    if (exerciseState == ExerciseState.STARTED) {
       //exercicio rolando
       return buttonConfig = {'label': 'Pausar', 'color': '#FFF06D'};
     }
-    if (getTimerState() == 2) {
+    if (exerciseState == ExerciseState.PAUSED) {
       //exercicio pausado
       return buttonConfig = {'label': 'Retomar', 'color': '#FFF06D'};
     }
-    if (getTimerState() == 3) {
+    if (exerciseState == ExerciseState.FINISHED) {
       //exercicio acabou
       return buttonConfig = {'label': 'Recomeçar', 'color': '#79FF6D'};
     }
@@ -150,15 +126,15 @@ abstract class HomeStoreBase with Store {
 
   Map getEffectPhrase() {
     Map effectPhraseStyle = {'label': 'Pronto?', 'color': '#FFFFFF'};
-    if (getTimerState() == 1) {
+    if (exerciseState == ExerciseState.STARTED) {
       //exercicio rolando
       return effectPhraseStyle = {'label': 'Força!', 'color': '#79FF6D'};
     }
-    if (getTimerState() == 2) {
+    if (exerciseState == ExerciseState.PAUSED) {
       //exercicio pausado
       return {'label': 'Pausado', 'color': '#FFF06D'};
     }
-    if (getTimerState() == 3) {
+    if (exerciseState == ExerciseState.FINISHED) {
       //exercicio acabou
       return {'label': 'Exercício finalizado!', 'color': '#FFFFFF'};
     }
