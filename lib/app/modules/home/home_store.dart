@@ -118,7 +118,7 @@ abstract class HomeStoreBase with Store {
       (Timer timer) {
         if (restTimer == 0) {
           timer.cancel();
-          nextRound();
+          nextRound(isSkipRound: false);
         } else {
           restTimer--;
         }
@@ -127,7 +127,14 @@ abstract class HomeStoreBase with Store {
   }
 
   @action
-  void nextRound() {
+  void nextRound({required bool isSkipRound}) {
+    if (isSkipRound) {
+      timer?.cancel();
+      rTimer?.cancel();
+      exerciseState = ExerciseState.REST;
+      startRestTimer();
+      return;
+    }
     if (currentRound < totalRounds) {
       currentRound++;
       exerciseTimer = exerciseTimerConfigBuffer;
@@ -155,9 +162,8 @@ abstract class HomeStoreBase with Store {
 
   @action
   void stopExerciseTimer() {
-    exerciseState = ExerciseState.IDLE;
     timer?.cancel();
-    exerciseTimer = exerciseTimerConfigBuffer;
+    resetExercise();
   }
 
   @action

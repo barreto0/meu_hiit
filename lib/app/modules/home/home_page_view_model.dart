@@ -28,7 +28,6 @@ abstract class HomePageViewModel extends State<HomePage> {
       onPressed: () {
         switch (state) {
           case ExerciseState.IDLE:
-            //idle
             homeStore.startExerciseTimer();
             break;
           case ExerciseState.STARTED:
@@ -52,7 +51,7 @@ abstract class HomePageViewModel extends State<HomePage> {
 
   Widget getStopAndSkipButtons() {
     ExerciseState state = homeStore.exerciseState;
-    if (state == ExerciseState.STARTED || state == ExerciseState.PAUSED) {
+    if (state == ExerciseState.STARTED) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -66,7 +65,9 @@ abstract class HomePageViewModel extends State<HomePage> {
           ),
           MeuHiitButton(
             width: ScreenHelper.screenWidthPercentage(context, 45),
-            onPressed: () {},
+            onPressed: () {
+              homeStore.nextRound(isSkipRound: true);
+            },
             label: 'Pular',
             color: '#706DFF',
           ),
