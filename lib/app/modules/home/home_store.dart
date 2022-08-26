@@ -118,7 +118,7 @@ abstract class HomeStoreBase with Store {
       (Timer timer) {
         if (restTimer == 0) {
           timer.cancel();
-          nextRound(isSkipRound: false);
+          nextRound();
         } else {
           restTimer--;
         }
@@ -127,14 +127,7 @@ abstract class HomeStoreBase with Store {
   }
 
   @action
-  void nextRound({required bool isSkipRound}) {
-    if (isSkipRound) {
-      timer?.cancel();
-      rTimer?.cancel();
-      exerciseState = ExerciseState.REST;
-      startRestTimer();
-      return;
-    }
+  void nextRound() {
     if (currentRound < totalRounds) {
       currentRound++;
       exerciseTimer = exerciseTimerConfigBuffer;
@@ -144,6 +137,40 @@ abstract class HomeStoreBase with Store {
     }
     if (currentRound == totalRounds) {
       exerciseState = ExerciseState.FINISHED;
+      return;
+    }
+  }
+
+  @action
+  void skipExerciseOrRest() {
+    if (currentRound == totalRounds) {
+      timer?.cancel();
+      rTimer?.cancel();
+      exerciseTimer = exerciseTimerConfigBuffer;
+      restTimer = restTimerConfigBuffer;
+      startRestTimer();
+      exerciseState = ExerciseState.REST;
+      return;
+    }
+    if (exerciseState == ExerciseState.STARTED ||
+        exerciseState == ExerciseState.PAUSED) {
+      timer?.cancel();
+      rTimer?.cancel();
+      exerciseTimer = exerciseTimerConfigBuffer;
+      restTimer = restTimerConfigBuffer;
+      startRestTimer();
+      exerciseState = ExerciseState.REST;
+      return;
+    }
+    if (exerciseState == ExerciseState.REST ||
+        exerciseState == ExerciseState.PAUSED_REST) {
+      timer?.cancel();
+      rTimer?.cancel();
+      exerciseTimer = exerciseTimerConfigBuffer;
+      restTimer = restTimerConfigBuffer;
+      currentRound++;
+      startExerciseTimer();
+      exerciseState = ExerciseState.STARTED;
       return;
     }
   }
@@ -168,8 +195,14 @@ abstract class HomeStoreBase with Store {
 
   @action
   void pauseRestTimer() {
-    exerciseState = ExerciseState.PAUSED;
+    exerciseState = ExerciseState.PAUSED_REST;
     rTimer?.cancel();
+  }
+
+  @action
+  void continueRestTimer() {
+    exerciseState = ExerciseState.STARTED;
+    startRestTimer();
   }
 
   @action
@@ -180,20 +213,10 @@ abstract class HomeStoreBase with Store {
   }
 
   @action
-  exerciseRoutine() async {
-    for (int i = 0; i < totalCycles; i++) {
-      for (int j = 0; j < totalRounds; j++) {
-        await startExerciseTimer();
-        await startRestTimer();
-        currentRound++;
-      }
-      currentCycle++;
-    }
-  }
-
-  @action
   void resetExercise() {
     exerciseState = ExerciseState.IDLE;
+    timer?.cancel();
+    rTimer?.cancel();
     exerciseTimer = exerciseTimerConfigBuffer;
     restTimer = restTimerConfigBuffer;
     totalRounds = totalRoundsConfigBuffer;
@@ -216,6 +239,10 @@ abstract class HomeStoreBase with Store {
       //tempo de descanso
       return buttonConfig = {'label': 'Pausar', 'color': '#6DFFF6'};
     }
+    if (exerciseState == ExerciseState.PAUSED_REST) {
+      //exercicio pausado
+      return buttonConfig = {'label': 'Retomar', 'color': '#FFF06D'};
+    }
     if (exerciseState == ExerciseState.FINISHED) {
       //exercicio acabou
       return buttonConfig = {'label': 'Finalizar', 'color': '#79FF6D'};
@@ -236,6 +263,10 @@ abstract class HomeStoreBase with Store {
     if (exerciseState == ExerciseState.REST) {
       //tempo de descanso
       return {'label': 'Devagar', 'color': '#6DFFF6'};
+    }
+    if (exerciseState == ExerciseState.PAUSED_REST) {
+      //exercicio pausado
+      return {'label': 'Pausado', 'color': '#FFF06D'};
     }
     if (exerciseState == ExerciseState.FINISHED) {
       //exercicio acabou

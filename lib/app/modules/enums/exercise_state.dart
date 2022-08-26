@@ -1,1 +1,1 @@
-enum ExerciseState { IDLE, STARTED, REST, PAUSED, FINISHED }
+enum ExerciseState { IDLE, STARTED, REST, PAUSED_REST, PAUSED, FINISHED }

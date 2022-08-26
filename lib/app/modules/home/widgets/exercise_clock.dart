@@ -15,6 +15,14 @@ class ExerciseClock extends StatefulWidget {
 class _ExerciseClockState extends State<ExerciseClock> {
   HomeStore homeStore = Modular.get<HomeStore>();
 
+  bool isRestState() {
+    if (homeStore.exerciseState == ExerciseState.REST ||
+        homeStore.exerciseState == ExerciseState.PAUSED_REST) {
+      return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (builder) {
@@ -27,7 +35,7 @@ class _ExerciseClockState extends State<ExerciseClock> {
                 context: context, color: homeStore.getEffectPhrase()['color']),
           ),
           Text(
-            homeStore.exerciseState == ExerciseState.REST
+            isRestState()
                 ? homeStore.formatTimer(homeStore.restTimer)
                 : homeStore.formatTimer(homeStore.exerciseTimer),
             style: TextStyleHelper.exerciseClockTextIDLE(

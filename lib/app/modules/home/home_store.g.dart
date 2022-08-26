@@ -189,14 +189,6 @@ mixin _$HomeStore on HomeStoreBase, Store {
     });
   }
 
-  late final _$exerciseRoutineAsyncAction =
-      AsyncAction('HomeStoreBase.exerciseRoutine', context: context);
-
-  @override
-  Future exerciseRoutine() {
-    return _$exerciseRoutineAsyncAction.run(() => super.exerciseRoutine());
-  }
-
   late final _$HomeStoreBaseActionController =
       ActionController(name: 'HomeStoreBase', context: context);
 
@@ -311,6 +303,39 @@ mixin _$HomeStore on HomeStoreBase, Store {
   }
 
   @override
+  dynamic startRestTimer() {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.startRestTimer');
+    try {
+      return super.startRestTimer();
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void nextRound() {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.nextRound');
+    try {
+      return super.nextRound();
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void skipExerciseOrRest() {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.skipExerciseOrRest');
+    try {
+      return super.skipExerciseOrRest();
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void pauseExerciseTimer() {
     final _$actionInfo = _$HomeStoreBaseActionController.startAction(
         name: 'HomeStoreBase.pauseExerciseTimer');
@@ -344,22 +369,22 @@ mixin _$HomeStore on HomeStoreBase, Store {
   }
 
   @override
-  dynamic startRestTimer() {
+  void pauseRestTimer() {
     final _$actionInfo = _$HomeStoreBaseActionController.startAction(
-        name: 'HomeStoreBase.startRestTimer');
+        name: 'HomeStoreBase.pauseRestTimer');
     try {
-      return super.startRestTimer();
+      return super.pauseRestTimer();
     } finally {
       _$HomeStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void pauseRestTimer() {
+  void continueRestTimer() {
     final _$actionInfo = _$HomeStoreBaseActionController.startAction(
-        name: 'HomeStoreBase.pauseRestTimer');
+        name: 'HomeStoreBase.continueRestTimer');
     try {
-      return super.pauseRestTimer();
+      return super.continueRestTimer();
     } finally {
       _$HomeStoreBaseActionController.endAction(_$actionInfo);
     }
