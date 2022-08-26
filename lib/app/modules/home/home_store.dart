@@ -142,33 +142,32 @@ abstract class HomeStoreBase with Store {
   }
 
   @action
+  void resetRound() {
+    timer?.cancel();
+    rTimer?.cancel();
+    exerciseTimer = exerciseTimerConfigBuffer;
+    restTimer = restTimerConfigBuffer;
+  }
+
+  @action
   void skipExerciseOrRest() {
     if (currentRound == totalRounds) {
-      timer?.cancel();
-      rTimer?.cancel();
-      exerciseTimer = exerciseTimerConfigBuffer;
-      restTimer = restTimerConfigBuffer;
+      resetRound();
       startRestTimer();
       exerciseState = ExerciseState.REST;
       return;
     }
     if (exerciseState == ExerciseState.STARTED ||
         exerciseState == ExerciseState.PAUSED) {
-      timer?.cancel();
-      rTimer?.cancel();
-      exerciseTimer = exerciseTimerConfigBuffer;
-      restTimer = restTimerConfigBuffer;
+      resetRound();
       startRestTimer();
       exerciseState = ExerciseState.REST;
       return;
     }
     if (exerciseState == ExerciseState.REST ||
         exerciseState == ExerciseState.PAUSED_REST) {
-      timer?.cancel();
-      rTimer?.cancel();
-      exerciseTimer = exerciseTimerConfigBuffer;
-      restTimer = restTimerConfigBuffer;
       currentRound++;
+      resetRound();
       startExerciseTimer();
       exerciseState = ExerciseState.STARTED;
       return;
@@ -237,7 +236,7 @@ abstract class HomeStoreBase with Store {
     }
     if (exerciseState == ExerciseState.REST) {
       //tempo de descanso
-      return buttonConfig = {'label': 'Pausar', 'color': '#6DFFF6'};
+      return buttonConfig = {'label': 'Pausar', 'color': '#FFF06D'};
     }
     if (exerciseState == ExerciseState.PAUSED_REST) {
       //exercicio pausado

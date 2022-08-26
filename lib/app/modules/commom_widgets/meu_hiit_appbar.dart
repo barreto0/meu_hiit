@@ -21,7 +21,7 @@ class MeuHiitAppbar extends StatelessWidget implements PreferredSize {
   Widget build(BuildContext context) {
     return AppBar(
         elevation: 0,
-        backgroundColor: ColorHelper.lightGray(),
+        backgroundColor: Colors.black,
         centerTitle: true,
         toolbarHeight: kToolbarHeight,
         title: Text(

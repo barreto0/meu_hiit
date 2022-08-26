@@ -11,7 +11,7 @@ class HomePageView extends HomePageViewModel {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorHelper.lightGray(),
+      backgroundColor: Colors.black,
       appBar: MeuHiitAppbar(title: 'Exercício', hasGoBack: false),
       body: Padding(
           padding: EdgeInsets.symmetric(
