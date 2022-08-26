@@ -136,7 +136,7 @@ abstract class HomeStoreBase with Store {
       return;
     }
     if (currentRound == totalRounds) {
-      exerciseState = ExerciseState.FINISHED;
+      nextCycle();
       return;
     }
   }
@@ -152,6 +152,16 @@ abstract class HomeStoreBase with Store {
   @action
   void skipExerciseOrRest() {
     if (currentRound == totalRounds) {
+      if (exerciseState == ExerciseState.REST) {
+        nextCycle();
+        return;
+      }
+      if (exerciseState == ExerciseState.REST) {
+        if (currentCycle == totalCycles) {
+          stopExerciseTimer();
+          return;
+        }
+      }
       resetRound();
       startRestTimer();
       exerciseState = ExerciseState.REST;
@@ -175,6 +185,21 @@ abstract class HomeStoreBase with Store {
   }
 
   @action
+  void nextCycle() {
+    if (currentCycle < totalCycles) {
+      resetRound();
+      currentCycle++;
+      currentRound = 1;
+      startExerciseTimer();
+      exerciseState = ExerciseState.STARTED;
+      return;
+    }
+    if (currentCycle == totalCycles) {
+      exerciseState = ExerciseState.FINISHED;
+    }
+  }
+
+  @action
   void pauseExerciseTimer() {
     exerciseState = ExerciseState.PAUSED;
     timer?.cancel();
@@ -189,7 +214,7 @@ abstract class HomeStoreBase with Store {
   @action
   void stopExerciseTimer() {
     timer?.cancel();
-    resetExercise();
+    resetExercise(ExerciseState.FINISHED);
   }
 
   @action
@@ -212,8 +237,8 @@ abstract class HomeStoreBase with Store {
   }
 
   @action
-  void resetExercise() {
-    exerciseState = ExerciseState.IDLE;
+  void resetExercise(ExerciseState state) {
+    exerciseState = state;
     timer?.cancel();
     rTimer?.cancel();
     exerciseTimer = exerciseTimerConfigBuffer;

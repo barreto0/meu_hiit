@@ -325,11 +325,33 @@ mixin _$HomeStore on HomeStoreBase, Store {
   }
 
   @override
+  void resetRound() {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.resetRound');
+    try {
+      return super.resetRound();
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void skipExerciseOrRest() {
     final _$actionInfo = _$HomeStoreBaseActionController.startAction(
         name: 'HomeStoreBase.skipExerciseOrRest');
     try {
       return super.skipExerciseOrRest();
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void nextCycle() {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.nextCycle');
+    try {
+      return super.nextCycle();
     } finally {
       _$HomeStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -402,11 +424,11 @@ mixin _$HomeStore on HomeStoreBase, Store {
   }
 
   @override
-  void resetExercise() {
+  void resetExercise(ExerciseState state) {
     final _$actionInfo = _$HomeStoreBaseActionController.startAction(
         name: 'HomeStoreBase.resetExercise');
     try {
-      return super.resetExercise();
+      return super.resetExercise(state);
     } finally {
       _$HomeStoreBaseActionController.endAction(_$actionInfo);
     }

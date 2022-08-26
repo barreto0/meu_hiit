@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:meu_hiit/app/modules/commom_widgets/meu_hiit_appbar.dart';
-import 'package:meu_hiit/app/modules/helpers/color_helper.dart';
 import 'package:meu_hiit/app/modules/helpers/screen_helper.dart';
 import 'package:meu_hiit/app/modules/home/widgets/exercise_clock.dart';
 import 'package:meu_hiit/app/modules/home/widgets/round_cycle_counter.dart';

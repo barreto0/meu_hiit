@@ -43,7 +43,7 @@ abstract class HomePageViewModel extends State<HomePage> {
             homeStore.continueExerciseTimer();
             break;
           case ExerciseState.FINISHED:
-            homeStore.resetExercise();
+            homeStore.resetExercise(ExerciseState.IDLE);
             break;
         }
       },
@@ -69,12 +69,6 @@ abstract class HomePageViewModel extends State<HomePage> {
           MeuHiitButton(
             width: ScreenHelper.screenWidthPercentage(context, 45),
             onPressed: () {
-              if ((state == ExerciseState.REST ||
-                      state == ExerciseState.PAUSED_REST) &&
-                  (homeStore.currentRound == homeStore.totalRounds)) {
-                homeStore.stopExerciseTimer();
-                return;
-              }
               homeStore.skipExerciseOrRest();
             },
             label: 'Pular',
