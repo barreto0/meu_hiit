@@ -1,7 +1,10 @@
 import 'dart:async';
 
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:meu_hiit/app/modules/enums/exercise_state.dart';
 import 'package:mobx/mobx.dart';
+
+import '../helpers/ad_helper.dart';
 
 part 'home_store.g.dart';
 
@@ -43,6 +46,32 @@ abstract class HomeStoreBase with Store {
 
   @observable
   int currentCycle = 1;
+
+  @observable
+  BannerAd? bannerAd;
+
+  @action
+  void initAdsHome() {
+    BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      request: AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          bannerAd = ad as BannerAd;
+        },
+        onAdFailedToLoad: (ad, err) {
+          print('Failed to load a banner ad: ${err.message}');
+          ad.dispose();
+        },
+      ),
+    ).load();
+  }
+
+  @action
+  void disposeAdsHome() {
+    bannerAd?.dispose();
+  }
 
   @action
   void increaseExerciseTimer() {

@@ -189,8 +189,46 @@ mixin _$HomeStore on HomeStoreBase, Store {
     });
   }
 
+  late final _$bannerAdAtom =
+      Atom(name: 'HomeStoreBase.bannerAd', context: context);
+
+  @override
+  BannerAd? get bannerAd {
+    _$bannerAdAtom.reportRead();
+    return super.bannerAd;
+  }
+
+  @override
+  set bannerAd(BannerAd? value) {
+    _$bannerAdAtom.reportWrite(value, super.bannerAd, () {
+      super.bannerAd = value;
+    });
+  }
+
   late final _$HomeStoreBaseActionController =
       ActionController(name: 'HomeStoreBase', context: context);
+
+  @override
+  void initAdsHome() {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.initAdsHome');
+    try {
+      return super.initAdsHome();
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void disposeAdsHome() {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.disposeAdsHome');
+    try {
+      return super.disposeAdsHome();
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void increaseExerciseTimer() {
@@ -447,7 +485,8 @@ totalRoundsConfigBuffer: ${totalRoundsConfigBuffer},
 totalCycles: ${totalCycles},
 totalCyclesConfigBuffer: ${totalCyclesConfigBuffer},
 currentRound: ${currentRound},
-currentCycle: ${currentCycle}
+currentCycle: ${currentCycle},
+bannerAd: ${bannerAd}
     ''';
   }
 }
