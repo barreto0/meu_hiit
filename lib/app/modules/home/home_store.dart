@@ -47,32 +47,6 @@ abstract class HomeStoreBase with Store {
   @observable
   int currentCycle = 1;
 
-  @observable
-  BannerAd? bannerAd;
-
-  @action
-  void initAdsHome() {
-    BannerAd(
-      adUnitId: AdHelper.bannerAdUnitId,
-      request: AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          bannerAd = ad as BannerAd;
-        },
-        onAdFailedToLoad: (ad, err) {
-          print('Failed to load a banner ad: ${err.message}');
-          ad.dispose();
-        },
-      ),
-    ).load();
-  }
-
-  @action
-  void disposeAdsHome() {
-    bannerAd?.dispose();
-  }
-
   @action
   void increaseExerciseTimer() {
     if (exerciseTimerConfigBuffer < 3600) exerciseTimerConfigBuffer++;
@@ -344,5 +318,33 @@ abstract class HomeStoreBase with Store {
     String formatedMinutesAndSecondsDuration =
         '${formatedFullDuration.split(':')[1]}:${formatedFullDuration.split(':')[2]}';
     return formatedMinutesAndSecondsDuration;
+  }
+
+  ///////////////////////////// ADS //////////////////////////////////////
+
+  @observable
+  BannerAd? bannerAd;
+
+  @action
+  void initAdsHome() {
+    BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      request: AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          bannerAd = ad as BannerAd;
+        },
+        onAdFailedToLoad: (ad, err) {
+          print('Failed to load a banner ad: ${err.message}');
+          ad.dispose();
+        },
+      ),
+    ).load();
+  }
+
+  @action
+  void disposeAdsHome() {
+    bannerAd?.dispose();
   }
 }
