@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:meu_hiit/app/modules/enums/exercise_state.dart';
 import 'package:mobx/mobx.dart';
 
@@ -11,6 +12,19 @@ part 'home_store.g.dart';
 class HomeStore = HomeStoreBase with _$HomeStore;
 
 abstract class HomeStoreBase with Store {
+  final audioPlayer = AudioPlayer();
+
+  void playBeepSfx() async {
+    await audioPlayer.setAsset('assets/sfx/beep_sfx.mp3');
+    audioPlayer.play();
+  }
+
+  void killMusicPlayer() async {
+    await audioPlayer.stop();
+    await audioPlayer.dispose();
+  }
+
+  ///////////////////// TIMER //////////////////////
   Timer? timer;
   Timer? rTimer;
 
@@ -97,6 +111,7 @@ abstract class HomeStoreBase with Store {
 
   @action
   startExerciseTimer() {
+    playBeepSfx();
     exerciseState = ExerciseState.STARTED;
     const oneSec = Duration(seconds: 1);
     timer = Timer.periodic(
@@ -114,6 +129,7 @@ abstract class HomeStoreBase with Store {
 
   @action
   startRestTimer() {
+    playBeepSfx();
     exerciseState = ExerciseState.REST;
     const oneSec = Duration(seconds: 1);
     rTimer = Timer.periodic(

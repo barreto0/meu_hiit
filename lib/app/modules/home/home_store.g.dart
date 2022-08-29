@@ -209,28 +209,6 @@ mixin _$HomeStore on HomeStoreBase, Store {
       ActionController(name: 'HomeStoreBase', context: context);
 
   @override
-  void initAdsHome() {
-    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
-        name: 'HomeStoreBase.initAdsHome');
-    try {
-      return super.initAdsHome();
-    } finally {
-      _$HomeStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void disposeAdsHome() {
-    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
-        name: 'HomeStoreBase.disposeAdsHome');
-    try {
-      return super.disposeAdsHome();
-    } finally {
-      _$HomeStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void increaseExerciseTimer() {
     final _$actionInfo = _$HomeStoreBaseActionController.startAction(
         name: 'HomeStoreBase.increaseExerciseTimer');
@@ -467,6 +445,28 @@ mixin _$HomeStore on HomeStoreBase, Store {
         name: 'HomeStoreBase.resetExercise');
     try {
       return super.resetExercise(state);
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void initAdsHome() {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.initAdsHome');
+    try {
+      return super.initAdsHome();
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void disposeAdsHome() {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.disposeAdsHome');
+    try {
+      return super.disposeAdsHome();
     } finally {
       _$HomeStoreBaseActionController.endAction(_$actionInfo);
     }

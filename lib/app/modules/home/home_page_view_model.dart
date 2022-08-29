@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:meu_hiit/app/modules/enums/exercise_state.dart';
 import 'package:meu_hiit/app/modules/home/home_store.dart';
 import 'package:meu_hiit/app/modules/home/widgets/configure_exercise/configure_exercise.dart';
 
 import '../commom_widgets/meu_hiit_button.dart';
-import '../helpers/ad_helper.dart';
 import '../helpers/screen_helper.dart';
 import 'home_page.dart';
 
 abstract class HomePageViewModel extends State<HomePage> {
   HomeStore homeStore = Modular.get<HomeStore>();
-  BannerAd? bannerAd;
 
   @override
   void initState() {
     homeStore.initAdsHome();
+    //initMusicPlayer();
     super.initState();
   }
 
   @override
   void dispose() {
     homeStore.disposeAdsHome();
+    homeStore.killMusicPlayer();
     super.dispose();
   }
 

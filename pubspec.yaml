@@ -15,6 +15,7 @@ dependencies:
   flutter_mobx: ^2.0.6+1
   google_fonts: ^3.0.1
   google_mobile_ads: ^2.0.1
+  just_audio: ^0.9.21
 
 dev_dependencies:
   flutter_test:
@@ -35,6 +36,7 @@ flutter:
 
   assets:
      - assets/images/
+     - assets/sfx/
   #   - images/a_dot_ham.jpeg
 
   # fonts:
